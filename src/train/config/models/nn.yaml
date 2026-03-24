@@ -1,8 +1,6 @@
 # ==============================================================================
-# NN (Simple Neural Network) Model Configuration (V1 Baseline)
+# NN (Simple Neural Network)
 # ==============================================================================
-# Simpler neural network for baseline comparison.
-# These are the ORIGINAL baseline hyperparameters.
 
 model_config:
   model: nn

@@ -1,9 +1,8 @@
 # ==============================================================================
-# DualTower MLP Configuration (DT-MLP) — For Ablation Study
+# DualTower MLP (DT-MLP) — Ablation variant
 # ==============================================================================
 # Left Tower: Categorical embeddings (Age, Gender, Ethnicity)
 # Right Tower: MLP for numerical vitals (replaces Transformer)
-# Used to isolate the contribution of Self-Attention in the ablation study
 
 model_config:
   model: dualtower_mlp

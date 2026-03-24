@@ -1,8 +1,6 @@
 # ==============================================================================
-# Transformer Model Configuration (V1 Baseline)
+# Transformer
 # ==============================================================================
-# Self-attention based model for tabular data.
-# These are the ORIGINAL baseline hyperparameters.
 
 model_config:
   model: transformer

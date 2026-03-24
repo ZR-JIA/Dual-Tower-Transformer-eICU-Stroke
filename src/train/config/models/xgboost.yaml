@@ -1,7 +1,6 @@
 # ==============================================================================
-# XGBoost Model Configuration (V1 Baseline)
+# XGBoost
 # ==============================================================================
-# Gradient boosted trees. These are the ORIGINAL baseline hyperparameters.
 
 model_config:
   model: xgboost
@@ -57,5 +56,5 @@ model_config:
   train_loop:
     batch_size: null
   
-  # Calibration (strongly recommended for XGBoost)
+  # Calibration
   calibration_after_fit: true
