@@ -1,6 +1,5 @@
 """
-Utility Functions for Safe Type Casting
-Handles conversion of YAML-loaded string values to proper types with validation.
+Safe type casting for YAML-loaded config values.
 """
 
 import logging

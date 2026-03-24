@@ -1,9 +1,5 @@
 """
-Trainers Module
-
-Provides trainer classes for different model types:
-- NeuralTrainer: For PyTorch models (MLP, NN, Transformer)
-- TreeTrainer: For tree-based models (XGBoost, Random Forest)
+NeuralTrainer and TreeTrainer for all model types.
 """
 
 import numpy as np

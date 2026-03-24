@@ -1,10 +1,5 @@
 """
-Model Factory Module
-
-Provides a clean factory pattern for building all supported models.
-Replaces the messy try-except fallback logic with strict registry-based instantiation.
-
-Extracted from the monolithic builders.py.
+Model Factory — registry-based model instantiation.
 """
 
 import logging

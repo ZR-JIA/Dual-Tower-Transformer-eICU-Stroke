@@ -2,7 +2,7 @@
 """
 Unified Training Script for eICU Stroke Mortality Prediction
 
-Supports all model types: MLP, NN, XGBoost, RandomForest, Transformer
+Supports all model types: MLP, NN, XGBoost, RandomForest, Transformer, DualTower
 
 Usage:
     python run_unified_train.py --model mlp --config config/model_mlp.yaml
@@ -186,7 +186,7 @@ def main():
     parser = argparse.ArgumentParser(description='Unified Training Script')
     parser.add_argument('--model', type=str, required=True,
                         choices=['mlp', 'nn', 'xgboost', 'random_forest', 'transformer', 'dualtower', 'dualtower_mlp'],
-                        help='Model type to train')    # Update for Dual Tower
+                        help='Model type to train')
     parser.add_argument('--config', type=str, required=False,
                        help='Path to model config (optional, will use default if not provided)')
     parser.add_argument('--seed', type=int, default=None,

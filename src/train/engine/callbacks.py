@@ -1,11 +1,5 @@
 """
-Callbacks Module
-
-Provides training callbacks for monitoring and control:
-- Early stopping
-- Model checkpointing
-- Learning rate monitoring
-- Metrics logging
+Training callbacks: early stopping, checkpointing, LR monitoring.
 """
 
 import os

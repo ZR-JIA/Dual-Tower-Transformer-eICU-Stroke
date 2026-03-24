@@ -1,12 +1,5 @@
 """
-Builders Module (REFACTORED)
-
-Slim coordinator module that delegates to:
-- TabularPreprocessor for data preprocessing
-- ModelFactory for model instantiation
-- Trainers for training logic
-
-Previously a 850-line "God Object", now a clean 250-line coordinator.
+Data loading, model building, and trainer routing.
 """
 
 import logging
@@ -27,9 +20,7 @@ logger = logging.getLogger(__name__)
 
 class DataModule:
     """
-    Data module for managing data loading and preprocessing.
-    
-    Now delegates heavy lifting to TabularPreprocessor.
+    Data module: preprocessing, DataLoader creation, and numpy access.
     
     Attributes:
         preprocessor: TabularPreprocessor instance

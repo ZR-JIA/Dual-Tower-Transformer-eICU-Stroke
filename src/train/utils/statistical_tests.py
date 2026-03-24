@@ -1,14 +1,5 @@
 """
-Statistical Tests Module
-
-Provides statistical significance testing for model comparison:
-- DeLong test for comparing AUROC
-- Paired t-test for comparing metrics
-- McNemar's test for comparing predictions
-- Permutation test for non-parametric comparison
-
-Required for academic publications to demonstrate statistical significance
-of model performance differences.
+Statistical significance tests: DeLong, paired t-test, McNemar, permutation.
 """
 
 import numpy as np

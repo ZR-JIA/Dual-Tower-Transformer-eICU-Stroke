@@ -1,7 +1,5 @@
 """
-Calibration Module
-
-Provides calibration curve computation for probability calibration analysis.
+Calibration curve computation.
 """
 
 import numpy as np

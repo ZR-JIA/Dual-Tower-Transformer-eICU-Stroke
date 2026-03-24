@@ -1,8 +1,5 @@
 """
-Model Registry Module
-
-Provides a registry system for managing different model types
-(NN, MLP, XGBoost, RandomForest, Transformer).
+Model registry for dynamic component registration and lookup.
 """
 
 from typing import Dict, Callable, Any, Optional, List
@@ -12,12 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 class ModelRegistry:
-    """
-    Registry for model builders and associated components.
-    
-    This allows dynamic registration and retrieval of model builders
-    based on model type specified in configuration.
-    """
+    """Registry for model builders and associated components."""
     
     def __init__(self):
         self._models: Dict[str, Callable] = {}

@@ -1,8 +1,5 @@
 """
-Data Validator Module
-
-Validates data before training to ensure quality and prevent issues.
-Wraps and extends the existing mlp_modules.data_validator.
+Data validation before training: schema, label, and split checks.
 """
 
 import numpy as np

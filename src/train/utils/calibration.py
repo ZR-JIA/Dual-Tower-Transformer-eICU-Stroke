@@ -1,10 +1,5 @@
 """
-Calibration Module
-
-Provides probability calibration methods for improving model reliability:
-- Platt scaling (logistic calibration)
-- Isotonic regression
-- Beta calibration
+Probability calibration: Platt scaling, isotonic regression, beta calibration.
 """
 
 import numpy as np

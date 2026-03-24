@@ -1,7 +1,5 @@
 """
-MLP Model Architectures
-
-Provides Multi-Layer Perceptron models for tabular data classification.
+MLP models for tabular data classification.
 """
 
 import torch

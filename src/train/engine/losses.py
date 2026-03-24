@@ -1,10 +1,5 @@
 """
-Loss Functions Module
-
-Provides various loss functions for binary classification:
-- BCEWithLogitsLoss (with pos_weight)
-- Focal Loss
-- Label Smoothing BCE Loss
+Loss functions: BCEWithLogitsLoss, Focal Loss, Label Smoothing BCE.
 """
 
 import torch

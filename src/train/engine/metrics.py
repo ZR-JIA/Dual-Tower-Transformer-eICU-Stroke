@@ -1,11 +1,5 @@
 """
-Metrics Module
-
-Provides comprehensive metrics computation for binary classification:
-- AUROC, AUPRC
-- Brier score, ECE (Expected Calibration Error)
-- F1, Precision, Recall, Specificity, NPV
-- Bootstrap confidence intervals
+Binary classification metrics: AUROC, AUPRC, Brier, ECE, F1, bootstrap CI.
 """
 
 import numpy as np

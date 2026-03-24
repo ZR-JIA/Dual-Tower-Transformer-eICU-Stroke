@@ -1,7 +1,5 @@
 """
-Transformer Model Architectures
-
-Provides Transformer-based models for tabular data classification.
+Transformer model for tabular data classification.
 """
 
 import torch
