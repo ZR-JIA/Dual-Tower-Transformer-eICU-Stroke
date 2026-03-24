@@ -1,9 +1,8 @@
 # ==============================================================================
-# DualTower Transformer Configuration (DT-Transformer)
+# DualTower Transformer (DT-Transformer)
 # ==============================================================================
 # Left Tower: Categorical embeddings (Age, Gender, Ethnicity)
 # Right Tower: Transformer Encoder for numerical vitals
-# Based on Optuna-optimized hyperparameters from V3 experiments
 
 model_config:
   model: dualtower

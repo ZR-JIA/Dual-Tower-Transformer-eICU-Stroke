@@ -1,7 +1,6 @@
 # ==============================================================================
-# Random Forest Model Configuration (V1 Baseline)
+# Random Forest
 # ==============================================================================
-# Ensemble of decision trees. These are the ORIGINAL baseline hyperparameters.
 
 model_config:
   model: random_forest
@@ -44,7 +43,7 @@ model_config:
   train_loop:
     batch_size: null                  # Not used for Random Forest
   
-  # Calibration (strongly recommended for RF)
+  # Calibration
   calibration_after_fit: true
   
   # Early stopping (not applicable to Random Forest)

@@ -1,8 +1,6 @@
 # ==============================================================================
-# MLP (Multi-Layer Perceptron) Model Configuration (V1 Baseline)
+# MLP (Multi-Layer Perceptron)
 # ==============================================================================
-# Multi-layer Perceptron for tabular data.
-# These are the ORIGINAL baseline hyperparameters.
 
 model_config:
   model: mlp
