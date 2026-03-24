@@ -1,7 +1,5 @@
 """
-Base Module for Model Components
-
-Provides shared layers and utilities used across different model architectures.
+Shared layers and utilities for model architectures.
 """
 
 import torch

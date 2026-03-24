@@ -1,11 +1,5 @@
 """
-Logging Module
-
-Provides comprehensive logging functionality including:
-- Console and file logging
-- Structured JSON logging
-- Git and config tracking
-- System information logging
+Logging setup, git tracking, and system info utilities.
 """
 
 import os

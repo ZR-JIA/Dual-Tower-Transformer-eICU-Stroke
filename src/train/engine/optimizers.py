@@ -1,7 +1,5 @@
 """
-Optimizers Module
-
-Provides optimizer builders from configuration with safe type casting.
+Optimizer builders from configuration.
 """
 
 import torch

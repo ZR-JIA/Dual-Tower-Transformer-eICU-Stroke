@@ -1,6 +1,5 @@
 """
-Configuration Utilities
-Provides safe type conversion and validation for configuration values.
+Safe type conversion and validation for config values.
 """
 
 import logging

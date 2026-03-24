@@ -1,7 +1,5 @@
 """
-Learning Rate Schedulers Module
-
-Provides LR scheduler builders from configuration with safe type casting.
+LR scheduler builders from configuration.
 """
 
 import torch

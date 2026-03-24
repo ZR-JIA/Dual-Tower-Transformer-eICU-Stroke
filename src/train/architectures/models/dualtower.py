@@ -1,7 +1,5 @@
 """
-Dual-Tower Model Architectures
-
-Provides the DualTower model with configurable right tower (MLP or Transformer).
+DualTower model with configurable right tower (MLP or Transformer).
 
 Architecture:
     Left Tower:  Categorical embeddings (Age, Gender, Ethnicity)

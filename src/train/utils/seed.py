@@ -1,8 +1,5 @@
 """
-Seed Management Module
-
-Provides functions for setting random seeds across all libraries
-to ensure reproducibility.
+Random seed management for reproducibility.
 """
 
 import os

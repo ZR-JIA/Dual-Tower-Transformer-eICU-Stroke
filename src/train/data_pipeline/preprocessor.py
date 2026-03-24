@@ -1,10 +1,5 @@
 """
-Tabular Data Preprocessor Module
-
-Provides a clean, stateful preprocessor for tabular data with proper
-fit/transform separation to prevent data leakage.
-
-Extracted from the monolithic DataModule._preprocess method.
+Tabular data preprocessor with fit/transform separation.
 """
 
 import logging

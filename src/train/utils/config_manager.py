@@ -1,39 +1,10 @@
 """
-Configuration Manager Module
+Tiered config system: _base/ defaults merged with per-model overrides,
+with ${section.key} variable resolution.
 
-Provides a unified, tiered configuration system that replaces the chaotic
-flat structure with a Base + Model approach.
-
-Features:
-- Tiered loading: _base/ configs loaded first, then model-specific configs
-- Variable resolution: Handles ${section.key} references
-- Singleton pattern: Global access to configuration
-- Validation: Ensures required keys exist
-- Caching: Efficient re-use of loaded configs
-
-Directory Structure:
     config/
-    ├── _base/
-    │   ├── 00_global.yaml   # Logging, seed, device, paths
-    │   ├── 01_data.yaml     # Dataset, splits, loaders
-    │   └── 02_train.yaml    # Training defaults (epochs, optimizer, etc.)
-    └── models/
-        ├── mlp.yaml         # MLP-specific params
-        ├── transformer.yaml # Transformer-specific params
-        └── ...
-
-Usage:
-    from utils.config_manager import ConfigManager
-    
-    # Get singleton instance
-    config_mgr = ConfigManager()
-    
-    # Load config for a model
-    config = config_mgr.load_config('mlp')
-    
-    # Access nested values
-    seed = config['common']['reproducibility']['seed']
-    lr = config['model_config']['optimizer']['lr']
+    ├── _base/          # 00_global, 01_data, 02_train
+    └── models/         # mlp.yaml, transformer.yaml, ...
 """
 
 import os
