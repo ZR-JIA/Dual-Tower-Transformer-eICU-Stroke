@@ -362,7 +362,7 @@ If you find this work useful, please cite:
   author    = {Jia, Zhengrong and Wong, Kwong-Cheong},
   booktitle = {Proceedings of the CCAI Conference},
   year      = {2026},
-  note      = {Under Review}
+  note      = {Accepted}
 }
 ```
 
