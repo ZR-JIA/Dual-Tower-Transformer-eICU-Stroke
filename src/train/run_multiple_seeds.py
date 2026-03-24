@@ -46,23 +46,23 @@ def parse_seeds_arg(seeds_arg: str) -> List[int]:
     Returns:
         list: List of seed values
     """
-    # 學術界公認的高熵隨機種子池 (High-Entropy Academic Seeds)
-    # 覆蓋不同數量級，避免偽隨機數生成器的局部相關性
+    # High-entropy academic seed pool covering different orders of magnitude
+    # to avoid local correlations from pseudo-random number generators
     ACADEMIC_SEEDS_POOL = [42, 2024, 777, 9999, 12345, 54321, 10086, 31415]
 
     if ',' in seeds_arg:
-        # 情況 1: 手動指定 (例如 --seeds 42,888)
+        # Case 1: Manually specified seeds (e.g., --seeds 42,888)
         return [int(s.strip()) for s in seeds_arg.split(',')]
     else:
-        # 情況 2: 指定數量 (例如 --seeds 5)
+        # Case 2: Specify count (e.g., --seeds 5)
         n_seeds = int(seeds_arg)
         
-        # 如果請求的數量小於等於我們準備的池子，就從池子裡取前 N 個
+        # If requested count <= pool size, take the first N from the pool
         if n_seeds <= len(ACADEMIC_SEEDS_POOL):
             return ACADEMIC_SEEDS_POOL[:n_seeds]
         else:
-            # 如果以後你想跑超過 8 次 (比如 10 次)，這裡做個備份邏輯：
-            # 超出的部分用傳統的 +1 方式生成
+            # Fallback: if more seeds are requested than the pool has,
+            # generate extra seeds sequentially
             print(f"⚠️ Warning: Requested {n_seeds} seeds, but pool only has {len(ACADEMIC_SEEDS_POOL)}. Generating extra seeds sequentially.")
             return ACADEMIC_SEEDS_POOL + list(range(42 + len(ACADEMIC_SEEDS_POOL), 42 + n_seeds))
 

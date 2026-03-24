@@ -80,46 +80,46 @@ def suggest_hyperparameters(model_name: str, config: Dict[str, Any], trial: optu
         params['min_samples_split'] = min_samples_split
         
     elif model_name == 'nn':
-        # --- 步骤 A: 结构适配 (Fix Structure) ---
-        # 1. 如果 YAML 里 optimizer 在根目录，把它搬到 train 下面
+        # --- Step A: Structure Adaptation ---
+        # 1. If optimizer is at root level in YAML, move it under 'train'
         if 'optimizer' in trial_config and 'optimizer' not in trial_config.get('train', {}):
             if 'train' not in trial_config: trial_config['train'] = {}
             trial_config['train']['optimizer'] = trial_config['optimizer']
             
-        # 2. 确保 train.optimizer 存在，如果还是没有，就创建一个默认的
+        # 2. Ensure train.optimizer exists; create a default if missing
         if 'train' not in trial_config: trial_config['train'] = {}
         if 'optimizer' not in trial_config['train']:
             trial_config['train']['optimizer'] = {'name': 'adam', 'lr': 1e-3}
 
-        # 3. 映射 architecture 到 model_config (适配 Builder)
+        # 3. Map architecture to model_config (adapt for Builder)
         if 'model_config' not in trial_config: trial_config['model_config'] = {}
-        # 强制指定类型为 mlp (因为底层代码用 MLP 类来实现 NN)
+        # Force type to 'mlp' (the underlying code uses MLPModel for NN)
         trial_config['model_config']['type'] = 'mlp' 
         
-        # 如果 YAML 里有 architecture，把参数拷过来作为默认值
+        # If YAML has 'architecture', copy its params as defaults
         if 'architecture' in trial_config:
             trial_config['model_config'].update(trial_config['architecture'])
 
 
-        # --- 步骤 B: Optuna 采样 (Hyperparameter Sampling) ---
-        # 1. 搜索学习率 (覆盖 YAML 中的 1e-3)
+        # --- Step B: Hyperparameter Sampling ---
+        # 1. Search learning rate (overrides YAML default of 1e-3)
         lr = trial.suggest_float('optimizer.lr', 1e-4, 1e-2, log=True)
         trial_config['train']['optimizer']['lr'] = lr
         
-        # 2. 搜索隐藏层大小 (覆盖 YAML 中的 128)
-        # NN 作为 Baseline，我们搜得小一点 (16-64)，和 Deep MLP 区分开
+        # 2. Search hidden dim (overrides YAML default of 128)
+        # NN is a baseline, so we search a smaller range (16-64) to differentiate from Deep MLP
         hidden_dim = trial.suggest_int('model.hidden_dim', 16, 64)
         trial_config['model_config']['hidden_dim'] = hidden_dim
         
-        # 3. 搜索层数 (固定为 1-2 层，保持 "Simple" 的定位)
+        # 3. Search num_layers (1-2 layers to keep "Simple" positioning)
         num_layers = trial.suggest_int('model.num_layers', 1, 2)
         trial_config['model_config']['num_layers'] = num_layers
         
-        # 4. Dropout (可以沿用 YAML 的 0.3，也可以微调)
+        # 4. Dropout (fine-tune around YAML default of 0.3)
         dropout = trial.suggest_float('model.dropout', 0.1, 0.5)
         trial_config['model_config']['dropout'] = dropout
         
-        # 5. 确保 input_dim 存在 (防止报错)
+        # 5. Ensure input_dim exists (prevent KeyError)
         trial_config['model_config']['input_dim'] = 94
 
     elif model_name == 'dualtower':
