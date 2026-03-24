@@ -148,7 +148,7 @@ Dual_Tower_CCAI/
 > **This repository covers the model training pipeline only.**
 > The data preprocessing pipeline (eICU raw data → train-ready CSV splits) is maintained in a separate repository:
 >
-> **🔗 [DATA PROJECT — Link to be added upon publication]**
+> **🔗 [[DATA PROJECT — Link to be added upon publication]](https://github.com/ZR-JIA/Data-Preprocessing-for-eICU)**
 >
 > Please refer to that repository for:
 > - Raw eICU data extraction and cohort selection
