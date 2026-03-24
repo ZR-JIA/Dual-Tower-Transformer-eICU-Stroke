@@ -352,7 +352,7 @@ This repository will be made **publicly available** upon official publication of
 >
 > \*Corresponding authors
 >
-> 📄 **[Paper Link — To be added upon publication]**
+> 📄 **[Paper Link](https://drive.google.com/file/d/1yl0XyzkV9QuHWtkpBu8RyXFypU3Ptb8b/view)**
 
 If you find this work useful, please cite:
 
