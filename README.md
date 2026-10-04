@@ -352,7 +352,7 @@ This repository will be made **publicly available** upon official publication of
 >
 > \*Corresponding authors
 >
-> 📄 **[Paper Link](https://ieeexplore.ieee.org/document/11641950/)**
+> 📄 **[IEEE Xplore](https://ieeexplore.ieee.org/document/11641950/)**
 
 If you find this work useful, please cite:
 
