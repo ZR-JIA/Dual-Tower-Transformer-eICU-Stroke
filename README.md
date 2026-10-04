@@ -357,13 +357,15 @@ This repository will be made **publicly available** upon official publication of
 If you find this work useful, please cite:
 
 ```bibtex
-@inproceedings{Jia2026DualTower,
-  title     = {Deep Learning for Stroke Mortality Prediction in eICU: A Dual-Tower Transformer Framework},
-  author    = {Jia, Zhengrong and Wong, Kwong-Cheong},
-  booktitle = {Proceedings of the CCAI Conference},
-  year      = {2026},
-  note      = {Accepted}
-}
+@INPROCEEDINGS{11641950,
+  author={Jia, Zhengrong and Wong, Kwong-Cheong},
+  booktitle={2026 6th International Conference on Computer Communication and Artificial Intelligence (CCAI)},
+  title={Deep Learning for Stroke Mortality Prediction in eICU: A Dual-Tower Transformer Framework},
+  year={2026},
+  volume={},
+  number={},
+  pages={76-81},
+  doi={10.1109/CCAI69603.2026.11641950}}
 ```
 
 ---
