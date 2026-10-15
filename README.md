@@ -1,3 +1,6 @@
+   > [!NOTE]
+   > The categorical tower implementation differs from its description in the CCAI 2026 paper. See [Note on the categorical tower](#note-on-the-categorical-tower-added-october-2026).
+
 # Deep Learning for Stroke Mortality Prediction in eICU: A Dual-Tower Transformer Framework
 
 [![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
@@ -312,6 +315,31 @@ To customize a run, either:
 ---
 
 ## Results
+
+### Note on the categorical tower (added October 2026)
+
+The CCAI 2026 paper (Section III-B-1 and Table I) states that the left
+(categorical) tower embeds **age, gender and ethnicity**. This description
+does not match the implementation that produced the published results.
+
+- Embeddings select columns by position (`x[:, idx]`, with `index: 1, 2, 3`
+  in the config). In the feature matrix, these positions hold
+  **gender, ethnicity and site_id**. Age (column 0) is processed by the
+  right (numerical) tower.
+- The `name` fields in the config files (`age`, `gender`, `ethnicity`) are
+  labels only and are not used to select columns.
+- The vocabulary sizes (150 / 10 / 50) were set for the intended assignment
+  and therefore apply to gender, ethnicity and site_id respectively.
+- The StandardScaler is fitted on all features, including the categorical
+  columns. The embedding layers therefore receive standardised values that
+  are truncated to integers and clamped to each vocabulary range, not the
+  original category codes; distinct site_id values collapse onto a small
+  number of indices.
+
+All reported numbers are the outputs of this implementation and have not
+been altered. The code is left unchanged so that the published results
+remain reproducible. A corrected description of the architecture is given
+in our follow-up work (PRICAI 2026, Section 3.2).
 
 ### Main Results (Table III from paper)
 
