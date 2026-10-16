@@ -328,18 +328,34 @@ does not match the implementation that produced the published results.
   right (numerical) tower.
 - The `name` fields in the config files (`age`, `gender`, `ethnicity`) are
   labels only and are not used to select columns.
-- The vocabulary sizes (150 / 10 / 50) were set for the intended assignment
-  and therefore apply to gender, ethnicity and site_id respectively.
+- The vocabulary sizes (150 / 10 / 50) and embedding widths (16 / 2 / 4) were
+  set for the intended assignment, and both follow position. They therefore
+  apply to gender, ethnicity and site_id respectively.
 - The StandardScaler is fitted on all features, including the categorical
-  columns. The embedding layers therefore receive standardised values that
-  are truncated to integers and clamped to each vocabulary range, not the
-  original category codes; distinct site_id values collapse onto a small
+  columns. The embedding layers therefore receive standardised values,
+  clamped to each vocabulary range and then truncated to integers, rather
+  than the original category codes. Because standardised values cluster
+  around zero, every category whose code lies below its column mean maps to
+  index 0, and distinct values (site_id in particular) collapse onto a small
   number of indices.
 
-All reported numbers are the outputs of this implementation and have not
-been altered. The code is left unchanged so that the published results
-remain reproducible. A corrected description of the architecture is given
-in our follow-up work (PRICAI 2026, Section 3.2).
+The paper's feature counts include the three categorical columns twice.
+The input had 94 columns in all: an Optuna log written the same day from the
+same input files records `Feature count: 94`, with the columns beginning
+`age, gender, ethnicity, site_id, admissionheight`, and `spaces.py` sets
+`input_dim = 94` for the NN baseline. The left tower took three of them and
+the right tower the other 91, so each column was used once. Section III-B-2
+gives the right tower 94 inputs, which is the total, and the 97 in Section V-B
+adds the three categorical columns a second time; the right tower had 91
+inputs and the standard Transformer baseline 94. The embedding widths
+(16 + 2 + 4 = 22) and the joint representation (22 + 64 = 86) are as stated.
+
+The reported performance results (Tables III and IV) are the outputs of this
+implementation and have not been altered. The code is left unchanged so that
+those results remain reproducible. A corrected description of the
+architecture is given in our follow-up work (PRICAI 2026, Section 3.2).
+Findings that concern the preprocessing pipeline are recorded separately in
+the [preprocessing repository](https://github.com/ZR-JIA/Data-Preprocessing-for-eICU/blob/fix/AUDIT.md).
 
 ### Main Results (Table III from paper)
 
