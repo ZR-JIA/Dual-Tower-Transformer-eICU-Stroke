@@ -14,6 +14,8 @@
 
 ## Abstract
 
+*As published in the paper. Read it together with the [corrections](#corrections-to-the-ccai-2026-paper-october-2026) below.*
+
 Stroke mortality prediction in Intensive Care Units (ICU) relies heavily on heterogeneous tabular data, where tree-based ensembles typically dominate. However, these models lack the flexibility for end-to-end multimodal integration. This study proposes a novel **Dual-Tower Transformer (DT-Transformer)** engineered to bridge the performance gap between deep learning architectures and gradient boosting benchmarks on the multi-center eICU database. We introduce a decoupled architecture that processes categorical demographics and numerical vitals through separate pathways, utilizing a **Self-Attention mechanism** to capture global feature interactions. Furthermore, an **Adaptive Runtime Safeguard** is integrated to ensure inference stability against physiological outliers. Results demonstrate that our method successfully resolves the convergence difficulty observed in standard Transformers (AUPRC 0.5279), achieving a higher mean AUPRC of **0.6171** (std 0.0058). While the tuned XGBoost baseline retains the performance ceiling (0.6467), our framework offers a competitive, fully differentiable alternative suitable for future integration with unstructured clinical notes.
 
 ---
@@ -24,7 +26,9 @@ The [paper](https://ieeexplore.ieee.org/document/11641950/) is a published
 conference article and cannot be amended, so its corrections are recorded
 here. None of them changes a reported performance
 number: Tables III and IV, and the values in Fig. 2, are the outputs of the
-code in this repository and have not been altered. The code is left unchanged
+code in this repository and have not been altered. They were obtained with
+the preprocessing as published (tag `ccai2026-published` in the preprocessing
+repository) and have not been re-run with its corrected `fix` branch. The code is left unchanged
 so that those results remain reproducible; the tag `ccai2026-published` pins
 it. A corrected description of the architecture is given in our follow-up
 work (PRICAI 2026, Section 3.2). Findings that concern the preprocessing
@@ -76,6 +80,16 @@ gives the right tower 94 inputs, which is the total, and the 97 in Section V-B
 adds the three categorical columns a second time; the right tower had 91
 inputs and the standard Transformer baseline 94. The embedding widths
 (16 + 2 + 4 = 22) and the joint representation (22 + 64 = 86) are as stated.
+
+### Data split
+
+The paper does not state how the data were split. The published experiments
+used a 70/10/20 split stratified by outcome and keyed on the ICU stay
+(`patientunitstayid`), not the patient (`uniquepid`), so a patient with
+several stays could appear in more than one split. How many did, and how
+much that affected the reported metrics, has not been measured
+([preprocessing AUDIT.md](https://github.com/ZR-JIA/Data-Preprocessing-for-eICU/blob/fix/AUDIT.md) EICU-02); the preprocessing `fix`
+branch splits by patient.
 
 ### Vital-sign examples
 
@@ -226,7 +240,7 @@ Dual_Tower_CCAI/
 > Please refer to that repository for:
 > - Raw eICU data extraction and cohort selection
 > - Feature engineering and missing value handling
-> - Patient-stratified train/val/test splitting
+> - Stratified train/val/test splitting (by ICU stay in the published version, by patient on `fix`)
 >
 > The preprocessed output files should be placed in `data/train_ready/`:
 > ```
