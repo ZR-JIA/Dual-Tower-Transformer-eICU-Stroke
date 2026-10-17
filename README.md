@@ -14,7 +14,7 @@
 
 ## Abstract
 
-Stroke mortality prediction in Intensive Care Units (ICU) relies heavily on heterogeneous tabular data, where tree-based ensembles typically dominate. However, these models lack the flexibility for end-to-end multimodal integration. This study proposes a novel **Dual-Tower Transformer (DT-Transformer)** engineered to bridge the performance gap between deep learning architectures and gradient boosting benchmarks on the multi-center eICU database. We introduce a decoupled architecture that processes categorical demographics and numerical vitals through separate pathways, utilizing a **Self-Attention mechanism** to capture global feature interactions. Furthermore, an **Adaptive Runtime Safeguard** is integrated to ensure inference stability against physiological outliers. Results demonstrate that our method successfully resolves the convergence difficulty observed in standard Transformers (AUPRC 0.5279), achieving a higher mean AUPRC of **0.6171** (std 0.006). While the tuned XGBoost baseline retains the performance ceiling (0.6467), our framework offers a competitive, fully differentiable alternative suitable for future integration with unstructured clinical notes.
+Stroke mortality prediction in Intensive Care Units (ICU) relies heavily on heterogeneous tabular data, where tree-based ensembles typically dominate. However, these models lack the flexibility for end-to-end multimodal integration. This study proposes a novel **Dual-Tower Transformer (DT-Transformer)** engineered to bridge the performance gap between deep learning architectures and gradient boosting benchmarks on the multi-center eICU database. We introduce a decoupled architecture that processes categorical demographics and numerical vitals through separate pathways, utilizing a **Self-Attention mechanism** to capture global feature interactions. Furthermore, an **Adaptive Runtime Safeguard** is integrated to ensure inference stability against physiological outliers. Results demonstrate that our method successfully resolves the convergence difficulty observed in standard Transformers (AUPRC 0.5279), achieving a higher mean AUPRC of **0.6171** (std 0.0058). While the tuned XGBoost baseline retains the performance ceiling (0.6467), our framework offers a competitive, fully differentiable alternative suitable for future integration with unstructured clinical notes.
 
 ---
 
@@ -98,7 +98,7 @@ not active in the reported experiments. See
 
 - **Dual-Tower Architecture** — Decoupled processing of categorical demographics (Left Tower: learnable embeddings) and numerical vitals (Right Tower: configurable MLP or Transformer encoder)
 - **NumericalFeatureTokenizer** — Converts scalar physiological features into dense token embeddings for self-attention, enabling high-order feature interaction capture
-- **Adaptive Runtime Safeguard** — Inference-time stability mechanism against physiological outliers
+- **Adaptive Runtime Safeguard** — Range checks and index clamping for the categorical inputs; see [what was active in the published runs](#adaptive-runtime-safeguard)
 - **Hierarchical Configuration System** — YAML-based config with `_base/` global defaults and per-model overrides, supporting `${variable}` resolution
 - **Unified Training Engine** — Single entry point supporting 7 model types: `DualTower (Transformer)`, `DualTower (MLP)`, `Transformer`, `MLP`, `NN`, `XGBoost`, `RandomForest`
 - **Multi-Seed Reproducibility** — Academic-grade multi-seed experiment runner with aggregated mean ± std reporting
@@ -110,38 +110,32 @@ not active in the reported experiments. See
 
 ## Adaptive Runtime Safeguard
 
-Unlike traditional offline data cleaning, the **Adaptive Runtime Safeguard** operates **online within the data loader**, acting as a protection mechanism against physiological outliers before tensors are transferred to the GPU. This ensures a "zero-crash" inference process critical for clinical deployment reliability.
+The paper (Section III-A, Table I) describes the safeguard as two mechanisms. This section states what the code in this repository does, and what was active in the published runs.
 
-The safeguard consists of two complementary mechanisms (see paper TABLE I):
+### 1. Categorical range checks and clamping
 
-### 1. Categorical Clamping
+| Feature | Constraint | Where |
+|---------|-----------|-------|
+| Age | x ∈ [0, 149] | `TabularPreprocessor._validate_categoricals()` |
+| Gender | x ∈ [0, 9] | same |
+| Ethnicity | x ∈ [0, 49] | same |
 
-| Feature | Constraint | Purpose |
-|---------|-----------|---------|
-| Age | x ∈ [0, 149] | Ensure biological plausibility |
-| Gender | x < 10 (vocabulary size) | Prevent embedding index-out-of-bounds |
-| Ethnicity | x < 50 (vocabulary size) | Prevent embedding index-out-of-bounds |
+These checks match columns by name and run in the preprocessor, before standardisation. Separately, `DualTower.forward()` (`src/train/architectures/models/dualtower.py`) clamps each embedding input to `[0, num_classes − 1]` before the lookup, so an out-of-range index cannot reach `nn.Embedding`. That clamp acts on the columns at positions 1–3, which are not the columns named above; see the [Note on the categorical tower](#note-on-the-categorical-tower-added-october-2026).
 
-**Implementation**: `src/train/architectures/models/dualtower.py` → `DualTower.forward()` uses `torch.clamp` on categorical indices.
+### 2. Numerical sanitisation: not active in the published runs
 
-### 2. Numerical Sanitization
+Table I also lists `x = max(0, x)` and `x ≤ 99th percentile`. Neither was applied in the published experiments:
 
-| Mechanism | Constraint | Purpose |
-|-----------|-----------|---------|
-| Negative rectification | x = max(0, x) | Rectify negative sensor errors |
-| Percentile capping | x ≤ 99th percentile | Cap extreme statistical outliers |
-
-**Implementation**: `src/train/data_pipeline/preprocessor.py` → `_fit_clip_outliers()` / `_transform_clip_outliers()`
-
-Configuration via `src/train/config/_base/01_data.yaml`:
+- No `max(0, x)` rectification exists in the code.
+- Percentile clipping is implemented (`_fit_clip_outliers()` / `_transform_clip_outliers()` in `src/train/data_pipeline/preprocessor.py`), with bounds at the 0.1th and 99.9th percentiles, fitted on the training split after standardisation. It is disabled in `src/train/config/_base/01_data.yaml` and in the configuration saved with every published run:
 
 ```yaml
 data:
   features:
     clip:
-      enabled: true       # Toggle the safeguard
-      p_low: 0.001        # Lower percentile bound
-      p_high: 0.999       # Upper percentile bound
+      enabled: false      # as used for the paper
+      p_low: 0.001        # lower percentile bound
+      p_high: 0.999       # upper percentile bound
 ```
 
 ---
@@ -227,7 +221,7 @@ Dual_Tower_CCAI/
 > **This repository covers the model training pipeline only.**
 > The data preprocessing pipeline (eICU raw data → train-ready CSV splits) is maintained in a separate repository:
 >
-> **🔗 [[DATA PROJECT — Link to be added upon publication]](https://github.com/ZR-JIA/Data-Preprocessing-for-eICU)**
+> **🔗 [Data-Preprocessing-for-eICU](https://github.com/ZR-JIA/Data-Preprocessing-for-eICU)** — `main` is the state used for the paper (tag `ccai2026-published`); corrections are on the `fix` branch.
 >
 > Please refer to that repository for:
 > - Raw eICU data extraction and cohort selection
@@ -418,7 +412,7 @@ Results averaged over 5 random seeds. RF and XGBoost are deterministic (single r
 
 ## Code Availability
 
-This repository will be made **publicly available** upon official publication of the paper, in compliance with the Data Use Agreement (DUA) Section 9. During the review period, the repository is set to private.
+This repository is public. It contains code and configuration only: no eICU data are included, in compliance with the Data Use Agreement (DUA). Access to eICU must be obtained through PhysioNet.
 
 ---
 
@@ -426,7 +420,7 @@ This repository will be made **publicly available** upon official publication of
 
 > **Deep Learning for Stroke Mortality Prediction in eICU: A Dual-Tower Transformer Framework**
 >
-> Zhengrong Jia\* (Asia AI Education and Future Technology Association, Shenzhen, China)
+> Zhengrong Jia\* (Asia AI Education and Future Technology Association, Hong Kong SAR, China)
 > Kwong-Cheong Wong\* (School of Governance and Policy Science, The Chinese University of Hong Kong, Hong Kong SAR, China)
 >
 > \*Corresponding authors
